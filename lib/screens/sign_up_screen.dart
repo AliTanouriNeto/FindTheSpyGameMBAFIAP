@@ -1,6 +1,14 @@
+import 'dart:convert';
+
 import 'package:find_the_spy/components/app_bar.dart';
-import 'package:find_the_spy/components/forms_sign_up.dart';
+import 'package:find_the_spy/screens/login_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../components/utilities.dart';
+import '../models/sign_up_service.dart';
+import '../models/user.dart';
+import '../values/preferences_keys.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({Key? key}) : super(key: key);
@@ -13,9 +21,16 @@ class SignUpScreen extends StatefulWidget {
 class _SignUpState extends State<SignUpScreen> {
   Color topColor = Colors.blueGrey;
   Color bottomColor = Colors.lightBlueAccent;
+  bool showPassword = false;
+  TextEditingController _nameInputController = TextEditingController();
+  TextEditingController _emailInputController = TextEditingController();
+  TextEditingController _passswordInputController = TextEditingController();
+  TextEditingController _confirmPasswordInputController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: CustomAppBar(),
       body: Container(
@@ -52,11 +67,247 @@ class _SignUpState extends State<SignUpScreen> {
                 ),
               ),
               Padding(padding: EdgeInsets.symmetric(vertical: 16)),
-              FormsSignUp(),
+              Form(
+                key: _formKey,
+                child: Column(
+                  children: [
+                    TextFormField(
+                      validator: _nameCheck,
+                      controller: _nameInputController,
+                      decoration: InputDecoration(
+                        labelText: 'Nome Completo',
+                        labelStyle: TextStyle(
+                          color: Colors.white,
+                        ),
+                        prefixIcon: Icon(
+                          Icons.person,
+                          color: Colors.white,
+                        ),
+                        focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Colors.white,
+                          ),
+                        ),
+                        enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ),
+                    TextFormField(
+                      validator: _emailCheck,
+                      controller: _emailInputController,
+                      decoration: InputDecoration(
+                        labelText: 'E-Mail',
+                        labelStyle: TextStyle(
+                          color: Colors.white,
+                        ),
+                        prefixIcon: Icon(
+                          Icons.mail_outline,
+                          color: Colors.white,
+                        ),
+                        focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Colors.white,
+                          ),
+                        ),
+                        enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ),
+                    TextFormField(
+                      validator: _passwordCheck,
+                      controller: _passswordInputController,
+                      obscureText: (showPassword == true) ? false : true,
+                      decoration: InputDecoration(
+                        labelText: 'Password',
+                        labelStyle: TextStyle(
+                          color: Colors.white,
+                        ),
+                        prefixIcon: Icon(
+                          Icons.key,
+                          color: Colors.white,
+                        ),
+                        focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Colors.white,
+                          ),
+                        ),
+                        enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ),
+                    TextFormField(
+                      validator: _confirmPasswordCheck,
+                      controller: _confirmPasswordInputController,
+                      obscureText: (showPassword == true) ? false : true,
+                      decoration: InputDecoration(
+                        labelText: 'Confirm Password',
+                        labelStyle: TextStyle(
+                          color: Colors.white,
+                        ),
+                        prefixIcon: Icon(
+                          Icons.key,
+                          color: Colors.white,
+                        ),
+                        focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Colors.white,
+                          ),
+                        ),
+                        enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ),
+                    Padding(padding: EdgeInsets.only(top: 12)),
+                    Row(
+                      children: [
+                        Checkbox(
+                          value: showPassword,
+                          onChanged: (var newValue) {
+                            setState(() {
+                              showPassword = newValue!;
+                              print(showPassword);
+                            });
+                          },
+                        ),
+                        Text(
+                          'Show Passwords?',
+                          style: TextStyle(
+                            color: Colors.white,
+                          ),
+                        ),
+                      ],
+                    ),
+                    Padding(padding: EdgeInsets.only(bottom: 32)),
+                    SizedBox(
+                      width: 300,
+                      height: 50,
+                      child: ElevatedButton(
+                        child: Text(
+                          'Register',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        onPressed: () {
+                          _doSignUp();
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.lightBlueAccent,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(50)),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ],
           ),
         ),
       ),
     );
+  }
+  void _doSignUp() async {
+    if (_formKey.currentState?.validate() == true) {
+      User newUser = User(
+        name: _nameInputController.text,
+        mail: _emailInputController.text,
+        password: _passswordInputController.text,
+        keepOn: true,
+      );
+      dynamic signUpResponse = await SignUpService().signUp(
+        _emailInputController.text,
+        _passswordInputController.text,
+      );
+      print(signUpResponse);
+      if (signUpResponse['sucesso']) {
+        Utilities.message(context, signUpResponse['mensagem']);
+        Navigator.pushNamed(context, LoginScreen.id);
+        _saveUser(newUser);
+      }
+      else {
+        Utilities.message(context, signUpResponse['mensagem']);
+      }
+    }
+  }
+
+  void _saveUser(User user) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString(
+      PreferencesKeys.activeUser,
+      json.encode(user.toJson()),
+    );
+  }
+
+  String? _emailCheck(String? value) {
+    String email = value ?? "";
+    RegExp regexEmail = RegExp(r"^\w+((-\w+)|(\.\w+))*\@\w+((\.|-)\w+)*\.\w+$");
+
+    if (regexEmail.allMatches(email).isEmpty) {
+      return "Informe um e-mail válido";
+    }
+
+    return null;
+  }
+
+  String? _passwordCheck(String? value){
+    String senha = value ?? "";
+
+    if (senha.length < 8) {
+      return "A senha deve ter ao menos 8 caracteres";
+    }
+
+    RegExp regexContemNumero = RegExp(r"\d");
+    RegExp regexContemLetraMinuscula = RegExp(r"[a-z]");
+    RegExp regexContemLetraMaiuscula = RegExp(r"[A-Z]");
+
+    if (regexContemNumero.allMatches(senha).isEmpty) {
+      return "A senha deve conter ao menos um caracter numérico";
+    }
+
+    if (regexContemLetraMinuscula.allMatches(senha).isEmpty) {
+      return "A senha deve conter ao menos uma letra minúscula";
+    }
+
+    if (regexContemLetraMaiuscula.allMatches(senha).isEmpty) {
+      return "A senha deve conter ao menos uma letra maiúscula";
+    }
+
+    return null;
+  }
+
+  String? _confirmPasswordCheck(String? value) {
+    String confirmacaoSenha = value ?? "";
+
+    if (confirmacaoSenha != _passswordInputController.text) {
+      return "As senhas estão diferentes";
+    }
+
+    return null;
+  }
+
+  String? _nameCheck(String? value) {
+    String nome = value ?? "";
+    RegExp regexNome = RegExp(r"^(\S)+(\s(\S)+)+$");
+
+    if (regexNome.allMatches(nome).isEmpty) {
+      return "Informe seu nome completo";
+    }
+
+    return null;
   }
 }

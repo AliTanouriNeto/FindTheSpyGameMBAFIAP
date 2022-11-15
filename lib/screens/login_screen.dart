@@ -2,7 +2,9 @@ import 'dart:convert';
 
 import 'package:find_the_spy/components/app_bar.dart';
 import 'package:find_the_spy/components/forgot_password.dart';
-import 'package:find_the_spy/components/stay_connected.dart';
+import 'package:find_the_spy/components/utilities.dart';
+import 'package:find_the_spy/models/sign_in_service.dart';
+import 'package:find_the_spy/screens/game_menu_screen.dart';
 import 'package:find_the_spy/screens/sign_up_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -25,15 +27,18 @@ class _LoginScreenState extends State<LoginScreen> {
   double elevation = 30;
   TextEditingController _mailInputController = TextEditingController();
   TextEditingController _passwordInputController = TextEditingController();
-  String mailInput = "";
-  String passInput = "";
+  final _formKey = GlobalKey<FormState>();
+  bool showPassword = true;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(),
       body: Container(
-        height: MediaQuery.of(context).size.height,
+        height: MediaQuery
+            .of(context)
+            .size
+            .height,
         padding: EdgeInsets.symmetric(horizontal: 50),
         decoration: BoxDecoration(
           gradient: LinearGradient(
@@ -66,9 +71,11 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
               Form(
+                key: _formKey,
                 child: Column(
                   children: [
                     TextFormField(
+                      validator: _emailValidator,
                       controller: _mailInputController,
                       decoration: InputDecoration(
                         labelText: 'E-Mail',
@@ -92,6 +99,8 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ),
                     TextFormField(
+                      validator: _passwordCheck,
+                      obscureText: (this.showPassword == true) ? false : true,
                       controller: _passwordInputController,
                       decoration: InputDecoration(
                         labelText: 'Password',
@@ -122,7 +131,17 @@ class _LoginScreenState extends State<LoginScreen> {
               Padding(
                 padding: EdgeInsets.only(bottom: 16),
               ),
-              StayConnected(),
+              CheckboxListTile(
+                title: Text(
+                    'Show Password', style: TextStyle(color: Colors.white)),
+                controlAffinity: ListTileControlAffinity.leading,
+                // ListTileControlAffinity.trailing
+                value: showPassword,
+                onChanged: (value) {
+                  showPassword = value!;
+                  setState(() {});
+                },
+              ),
               Padding(
                 padding: EdgeInsets.only(bottom: 32),
               ),
@@ -178,13 +197,20 @@ class _LoginScreenState extends State<LoginScreen> {
   Future<void> doLogin() async {
     String mailform = _mailInputController.text;
     String passForm = _passwordInputController.text;
-    User savedUser = await getSavedUser();
-    if (mailform == savedUser.mail && passForm == savedUser.password) {
-      print("LOGIN EFETUADO COM SUCESSO!!!");
-    } else {
-      print("FALHA NO LOGIN!!!");
+
+    if (_formKey.currentState?.validate() == true){
+      SignInService().signIn(mailform, passForm);
+      dynamic loginResponse = await SignInService().signIn(mailform, passForm);
+      if (loginResponse['sucesso']) {
+        Utilities.message(context, loginResponse['mensagem']);
+        Navigator.pushReplacementNamed(context, GameMenuScreen.id);
+      }
+      else {
+        Utilities.message(context, loginResponse['mensagem']);
+      }
     }
   }
+
 
   Future<User> getSavedUser() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -195,4 +221,31 @@ class _LoginScreenState extends State<LoginScreen> {
     User user = User.fromJson(mapUser);
     return user;
   }
+
+
+  String? _emailValidator(String? value){
+    String mail = value ?? "";
+
+    RegExp regexEmail = RegExp(
+        r"^\w+((-\w+)|(\.\w+))*\@\w+((\.|-)\w+)*\.\w+$");
+
+    if (regexEmail.allMatches(mail).isEmpty) {
+      return "Informe um e-mail válido";
+    }
+
+    return null;
+  }
+
+
+  String? _passwordCheck(String? value){
+    String senha = value ?? "";
+
+    if (senha == "") {
+      return "Informa uma senha válida";
+    }
+
+    return null;
+  }
+
+
 }

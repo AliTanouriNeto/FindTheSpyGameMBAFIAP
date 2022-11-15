@@ -1,4 +1,5 @@
 
+import 'package:find_the_spy/screens/game_menu_screen.dart';
 import 'package:find_the_spy/screens/home_screen.dart';
 import 'package:find_the_spy/screens/login_screen.dart';
 import 'package:find_the_spy/screens/menu_screen.dart';
@@ -27,6 +28,7 @@ class MyApp extends StatelessWidget {
           HomeScreen.id: (context) => const HomeScreen(),
           LoginScreen.id: (context) => const LoginScreen(),
           SignUpScreen.id: (context) => const SignUpScreen(),
+          GameMenuScreen.id: (context) => const GameMenuScreen(),
         },
     );
   }
