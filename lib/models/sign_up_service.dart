@@ -25,6 +25,7 @@ class SignUpService {
         'sucesso': false,
         'mensagem': retornarMensagemSignUp(bodyJson['error']['message']),
         'idToken': null
+
       };
     } else {
       var idToken = bodyJson['idToken'];
