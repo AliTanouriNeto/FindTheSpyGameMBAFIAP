@@ -238,7 +238,6 @@ class _SignUpState extends State<SignUpScreen> {
         return;
       } else {
         Utilities.message(context, signUpResponse['mensagem']);
-
       }
     }
   }
