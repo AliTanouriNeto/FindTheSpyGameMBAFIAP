@@ -25,12 +25,12 @@ class _SignUpState extends State<SignUpScreen> {
   TextEditingController _nameInputController = TextEditingController();
   TextEditingController _emailInputController = TextEditingController();
   TextEditingController _passswordInputController = TextEditingController();
-  TextEditingController _confirmPasswordInputController = TextEditingController();
+  TextEditingController _confirmPasswordInputController =
+      TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: CustomAppBar(),
       body: Container(
@@ -221,25 +221,22 @@ class _SignUpState extends State<SignUpScreen> {
       ),
     );
   }
+
   void _doSignUp() async {
     if (_formKey.currentState?.validate() == true) {
-      User newUser = User(
-        name: _nameInputController.text,
-        mail: _emailInputController.text,
-        password: _passswordInputController.text,
-        keepOn: true,
-      );
+      String _emailForm = _emailInputController.text;
+      String _passForm = _passswordInputController.text;
+
       dynamic signUpResponse = await SignUpService().signUp(
-        _emailInputController.text,
-        _passswordInputController.text,
+        _emailForm,
+        _passForm,
       );
-      print(signUpResponse);
+      print("SignupResponse " + signUpResponse['mensagem']);
       if (signUpResponse['sucesso']) {
         Utilities.message(context, signUpResponse['mensagem']);
-        Navigator.pushNamed(context, LoginScreen.id);
-        _saveUser(newUser);
-      }
-      else {
+        Navigator.pushReplacementNamed(context, LoginScreen.id);
+        return;
+      } else {
         Utilities.message(context, signUpResponse['mensagem']);
       }
     }
@@ -264,7 +261,7 @@ class _SignUpState extends State<SignUpScreen> {
     return null;
   }
 
-  String? _passwordCheck(String? value){
+  String? _passwordCheck(String? value) {
     String senha = value ?? "";
 
     if (senha.length < 8) {
@@ -276,15 +273,15 @@ class _SignUpState extends State<SignUpScreen> {
     RegExp regexContemLetraMaiuscula = RegExp(r"[A-Z]");
 
     if (regexContemNumero.allMatches(senha).isEmpty) {
-      return "A senha deve conter ao menos um caracter numérico";
+      return "Ao menos um caracter numérico";
     }
 
     if (regexContemLetraMinuscula.allMatches(senha).isEmpty) {
-      return "A senha deve conter ao menos uma letra minúscula";
+      return "Ao menos uma letra minúscula";
     }
 
     if (regexContemLetraMaiuscula.allMatches(senha).isEmpty) {
-      return "A senha deve conter ao menos uma letra maiúscula";
+      return "Ao menos uma letra maiúscula";
     }
 
     return null;

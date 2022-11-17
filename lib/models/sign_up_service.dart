@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
 import '../constants/routes.dart';
 
 class SignUpService {
@@ -28,7 +27,7 @@ class SignUpService {
         'idToken': null
       };
     } else {
-      var idToken = bodyJson('idToken');
+      var idToken = bodyJson['idToken'];
 
       return {
         'sucesso': true,
