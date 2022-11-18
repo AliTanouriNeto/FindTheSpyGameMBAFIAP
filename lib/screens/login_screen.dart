@@ -28,7 +28,8 @@ class _LoginScreenState extends State<LoginScreen> {
   TextEditingController _mailInputController = TextEditingController();
   TextEditingController _passwordInputController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
-  bool showPassword = true;
+  bool showPassword = false;
+  bool _isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -73,7 +74,7 @@ class _LoginScreenState extends State<LoginScreen> {
               Form(
                 key: _formKey,
                 child: Column(
-                  children: [
+                  children: [(_isLoading) ? CircularProgressIndicator():
                     TextFormField(
                       validator: _emailValidator,
                       controller: _mailInputController,
@@ -137,9 +138,8 @@ class _LoginScreenState extends State<LoginScreen> {
                 controlAffinity: ListTileControlAffinity.leading,
                 // ListTileControlAffinity.trailing
                 value: showPassword,
-                onChanged: (value) {
-                  showPassword = value!;
-                  setState(() {});
+                onChanged: (var newValue) {
+                  setState(() {showPassword = newValue!;});
                 },
               ),
               Padding(
@@ -197,11 +197,17 @@ class _LoginScreenState extends State<LoginScreen> {
   Future<void> doLogin() async {
     String mailform = _mailInputController.text;
     String passForm = _passwordInputController.text;
+    setState(() {
+      this._isLoading = true;
+    });
 
     if (_formKey.currentState?.validate() == true){
       SignInService().signIn(mailform, passForm);
       dynamic loginResponse = await SignInService().signIn(mailform, passForm);
       if (loginResponse['sucesso']) {
+        setState(() {
+          this._isLoading = false;
+        });
         Utilities.message(context, loginResponse['mensagem']);
         Navigator.pushReplacementNamed(context, GameMenuScreen.id);
       }
