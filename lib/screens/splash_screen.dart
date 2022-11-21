@@ -4,11 +4,16 @@ import 'package:flutter/material.dart';
 
 import 'tutorial_screen.dart';
 
-class MenuScreen extends StatelessWidget {
+class SplashScreen extends StatefulWidget {
   static const String id = 'menu_screen';
 
-  const MenuScreen({Key? key}) : super(key: key);
+  const SplashScreen({Key? key}) : super(key: key);
 
+  @override
+  State<SplashScreen> createState() => _SplashScreenState();
+}
+
+class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

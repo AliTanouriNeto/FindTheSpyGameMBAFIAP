@@ -4,7 +4,7 @@ import 'package:find_the_spy/screens/maps_screen.dart';
 import 'package:find_the_spy/screens/play_game_screen.dart';
 import 'package:find_the_spy/screens/tutorial_screen.dart';
 import 'package:find_the_spy/screens/login_screen.dart';
-import 'package:find_the_spy/screens/menu_screen.dart';
+import 'package:find_the_spy/screens/splash_screen.dart';
 import 'package:find_the_spy/screens/sign_up_screen.dart';
 import 'package:flutter/material.dart';
 // @dart=2.9
@@ -24,9 +24,9 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.indigo,
         ),
-        initialRoute: GameMenuScreen.id,
+        initialRoute: SplashScreen.id,
         routes: {
-          MenuScreen.id: (context) => MenuScreen(),
+          SplashScreen.id: (context) => SplashScreen(),
           TutorialScreen.id: (context) => const TutorialScreen(),
           LoginScreen.id: (context) => const LoginScreen(),
           SignUpScreen.id: (context) => const SignUpScreen(),

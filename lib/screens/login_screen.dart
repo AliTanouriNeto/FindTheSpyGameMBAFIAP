@@ -36,10 +36,7 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
       appBar: CustomAppBar(),
       body: Container(
-        height: MediaQuery
-            .of(context)
-            .size
-            .height,
+        height: MediaQuery.of(context).size.height,
         padding: EdgeInsets.symmetric(horizontal: 50),
         decoration: BoxDecoration(
           gradient: LinearGradient(
@@ -74,31 +71,33 @@ class _LoginScreenState extends State<LoginScreen> {
               Form(
                 key: _formKey,
                 child: Column(
-                  children: [(_isLoading) ? CircularProgressIndicator():
-                    TextFormField(
-                      validator: _emailValidator,
-                      controller: _mailInputController,
-                      decoration: InputDecoration(
-                        labelText: 'E-Mail',
-                        labelStyle: TextStyle(
-                          color: Colors.white,
-                        ),
-                        prefixIcon: Icon(
-                          Icons.mail_outline,
-                          color: Colors.white,
-                        ),
-                        focusedBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(
-                            color: Colors.white,
+                  children: [
+                    (_isLoading)
+                        ? CircularProgressIndicator()
+                        : TextFormField(
+                            validator: _emailValidator,
+                            controller: _mailInputController,
+                            decoration: InputDecoration(
+                              labelText: 'E-Mail',
+                              labelStyle: TextStyle(
+                                color: Colors.white,
+                              ),
+                              prefixIcon: Icon(
+                                Icons.mail_outline,
+                                color: Colors.white,
+                              ),
+                              focusedBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: Colors.white,
+                                ),
+                              ),
+                              enabledBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
                           ),
-                        ),
-                        enabledBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
-                    ),
                     TextFormField(
                       validator: _passwordCheck,
                       obscureText: (this.showPassword == true) ? false : true,
@@ -133,13 +132,15 @@ class _LoginScreenState extends State<LoginScreen> {
                 padding: EdgeInsets.only(bottom: 16),
               ),
               CheckboxListTile(
-                title: Text(
-                    'Show Password', style: TextStyle(color: Colors.white)),
+                title: Text('Show Password',
+                    style: TextStyle(color: Colors.white)),
                 controlAffinity: ListTileControlAffinity.leading,
                 // ListTileControlAffinity.trailing
                 value: showPassword,
                 onChanged: (var newValue) {
-                  setState(() {showPassword = newValue!;});
+                  setState(() {
+                    showPassword = newValue!;
+                  });
                 },
               ),
               Padding(
@@ -201,7 +202,7 @@ class _LoginScreenState extends State<LoginScreen> {
       this._isLoading = true;
     });
 
-    if (_formKey.currentState?.validate() == true){
+    if (_formKey.currentState?.validate() == true) {
       SignInService().signIn(mailform, passForm);
       dynamic loginResponse = await SignInService().signIn(mailform, passForm);
       if (loginResponse['sucesso']) {
@@ -210,13 +211,14 @@ class _LoginScreenState extends State<LoginScreen> {
         });
         Utilities.message(context, loginResponse['mensagem']);
         Navigator.pushReplacementNamed(context, GameMenuScreen.id);
-      }
-      else {
+      } else {
+        setState(() {
+          this._isLoading = false;
+        });
         Utilities.message(context, loginResponse['mensagem']);
       }
     }
   }
-
 
   Future<User> getSavedUser() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -228,12 +230,10 @@ class _LoginScreenState extends State<LoginScreen> {
     return user;
   }
 
-
-  String? _emailValidator(String? value){
+  String? _emailValidator(String? value) {
     String mail = value ?? "";
 
-    RegExp regexEmail = RegExp(
-        r"^\w+((-\w+)|(\.\w+))*\@\w+((\.|-)\w+)*\.\w+$");
+    RegExp regexEmail = RegExp(r"^\w+((-\w+)|(\.\w+))*\@\w+((\.|-)\w+)*\.\w+$");
 
     if (regexEmail.allMatches(mail).isEmpty) {
       return "Informe um e-mail válido";
@@ -242,8 +242,7 @@ class _LoginScreenState extends State<LoginScreen> {
     return null;
   }
 
-
-  String? _passwordCheck(String? value){
+  String? _passwordCheck(String? value) {
     String senha = value ?? "";
 
     if (senha == "") {
@@ -252,6 +251,4 @@ class _LoginScreenState extends State<LoginScreen> {
 
     return null;
   }
-
-
 }
