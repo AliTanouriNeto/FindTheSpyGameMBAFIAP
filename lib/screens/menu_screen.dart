@@ -2,7 +2,7 @@ import 'package:find_the_spy/components/app_bar.dart';
 import 'package:find_the_spy/components/fingerprint_material.dart';
 import 'package:flutter/material.dart';
 
-import 'home_screen.dart';
+import 'tutorial_screen.dart';
 
 class MenuScreen extends StatelessWidget {
   static const String id = 'menu_screen';

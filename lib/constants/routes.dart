@@ -5,4 +5,5 @@ class Routes{
 
   static const urlSignUp = "$_baseUrl/accounts:signUp?key=$_apiKey";
   static const urlSignIn = "$_baseUrl/accounts:signInWithPassword?key=$_apiKey";
+  static const realTimeBase = "find-the-spy-app-default-rtdb.firebaseio.com";
 }

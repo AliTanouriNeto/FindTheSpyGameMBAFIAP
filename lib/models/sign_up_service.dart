@@ -6,7 +6,7 @@ import '../constants/routes.dart';
 class SignUpService {
   get bodyJson => null;
 
-  signUp(String email, String password) async {
+  signUp(String email, String password,String name) async {
     var uri = Uri.parse(Routes.urlSignUp);
     http.Response response = await http.post(
       uri,
@@ -25,7 +25,6 @@ class SignUpService {
         'sucesso': false,
         'mensagem': retornarMensagemSignUp(bodyJson['error']['message']),
         'idToken': null
-
       };
     } else {
       var idToken = bodyJson['idToken'];
@@ -38,13 +37,23 @@ class SignUpService {
     }
   }
 
+  saveOnRealTimeDatabase(String name, String email) {
+    Uri url = Uri.https(Routes.realTimeBase, "/register.json");
+    http.post(
+      url,
+      body: json.encode(
+        {"name": name, "email": email},
+      ),
+    );
+  }
 
-  String retornarMensagemSignUp(String respostaSignUp){
+  String retornarMensagemSignUp(String respostaSignUp) {
     print(respostaSignUp);
-    switch(respostaSignUp)
-    {
-      case 'EMAIL_EXISTS': return 'E-mail já cadastrado';
-      default: return 'Erro ao realizar cadastro';
+    switch (respostaSignUp) {
+      case 'EMAIL_EXISTS':
+        return 'E-mail já cadastrado';
+      default:
+        return 'Erro ao realizar cadastro';
     }
   }
 }

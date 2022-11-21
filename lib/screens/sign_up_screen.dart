@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:find_the_spy/components/app_bar.dart';
 import 'package:find_the_spy/screens/login_screen.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -52,182 +53,182 @@ class _SignUpState extends State<SignUpScreen> {
               colors: [topColor, bottomColor]),
         ),
         child: SingleChildScrollView(
-      child: Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Image.asset(
-            'assets/icon.png',
-            height: 180,
-            width: 180,
-            color: Colors.black54,
-          ),
-          SizedBox(
-            height: 12,
-            width: double.infinity,
-          ),
-          Text(
-            "Register",
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 24,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          Padding(padding: EdgeInsets.symmetric(vertical: 16)),
-          Form(
-            key: _formKey,
-            child: (_isLoading) ? CircularProgressIndicator():
-            Column(
-              children: [
-                TextFormField(
-                  validator: _nameCheck,
-                  controller: _nameInputController,
-                  decoration: InputDecoration(
-                    labelText: 'Nome Completo',
-                    labelStyle: TextStyle(
-                      color: Colors.white,
-                    ),
-                    prefixIcon: Icon(
-                      Icons.person,
-                      color: Colors.white,
-                    ),
-                    focusedBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Colors.white,
-                      ),
-                    ),
-                    enabledBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Image.asset(
+                'assets/icon.png',
+                height: 180,
+                width: 180,
+                color: Colors.black54,
+              ),
+              SizedBox(
+                height: 12,
+                width: double.infinity,
+              ),
+              Text(
+                "Register",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
                 ),
-                TextFormField(
-                  validator: _emailCheck,
-                  controller: _emailInputController,
-                  decoration: InputDecoration(
-                    labelText: 'E-Mail',
-                    labelStyle: TextStyle(
-                      color: Colors.white,
-                    ),
-                    prefixIcon: Icon(
-                      Icons.mail_outline,
-                      color: Colors.white,
-                    ),
-                    focusedBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Colors.white,
-                      ),
-                    ),
-                    enabledBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                ),
-                TextFormField(
-                  validator: _passwordCheck,
-                  controller: _passswordInputController,
-                  obscureText: (showPassword == true) ? false : true,
-                  decoration: InputDecoration(
-                    labelText: 'Password',
-                    labelStyle: TextStyle(
-                      color: Colors.white,
-                    ),
-                    prefixIcon: Icon(
-                      Icons.key,
-                      color: Colors.white,
-                    ),
-                    focusedBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Colors.white,
-                      ),
-                    ),
-                    enabledBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                ),
-                TextFormField(
-                  validator: _confirmPasswordCheck,
-                  controller: _confirmPasswordInputController,
-                  obscureText: (showPassword == true) ? false : true,
-                  decoration: InputDecoration(
-                    labelText: 'Confirm Password',
-                    labelStyle: TextStyle(
-                      color: Colors.white,
-                    ),
-                    prefixIcon: Icon(
-                      Icons.key,
-                      color: Colors.white,
-                    ),
-                    focusedBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Colors.white,
-                      ),
-                    ),
-                    enabledBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                ),
-                Padding(padding: EdgeInsets.only(top: 12)),
-                Row(
+              ),
+              Padding(padding: EdgeInsets.symmetric(vertical: 16)),
+              Form(
+                key: _formKey,
+                child: (_isLoading) ? CircularProgressIndicator() :
+                Column(
                   children: [
-                    Checkbox(
-                      value: showPassword,
-                      onChanged: (var newValue) {
-                        setState(() {
-                          showPassword = newValue!;
-                          print(showPassword);
-                        });
-                      },
+                    TextFormField(
+                      validator: _nameCheck,
+                      controller: _nameInputController,
+                      decoration: InputDecoration(
+                        labelText: 'Nome Completo',
+                        labelStyle: TextStyle(
+                          color: Colors.white,
+                        ),
+                        prefixIcon: Icon(
+                          Icons.person,
+                          color: Colors.white,
+                        ),
+                        focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Colors.white,
+                          ),
+                        ),
+                        enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
                     ),
-                    Text(
-                      'Show Passwords?',
-                      style: TextStyle(
-                        color: Colors.white,
+                    TextFormField(
+                      validator: _emailCheck,
+                      controller: _emailInputController,
+                      decoration: InputDecoration(
+                        labelText: 'E-Mail',
+                        labelStyle: TextStyle(
+                          color: Colors.white,
+                        ),
+                        prefixIcon: Icon(
+                          Icons.mail_outline,
+                          color: Colors.white,
+                        ),
+                        focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Colors.white,
+                          ),
+                        ),
+                        enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ),
+                    TextFormField(
+                      validator: _passwordCheck,
+                      controller: _passswordInputController,
+                      obscureText: (showPassword == true) ? false : true,
+                      decoration: InputDecoration(
+                        labelText: 'Password',
+                        labelStyle: TextStyle(
+                          color: Colors.white,
+                        ),
+                        prefixIcon: Icon(
+                          Icons.key,
+                          color: Colors.white,
+                        ),
+                        focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Colors.white,
+                          ),
+                        ),
+                        enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ),
+                    TextFormField(
+                      validator: _confirmPasswordCheck,
+                      controller: _confirmPasswordInputController,
+                      obscureText: (showPassword == true) ? false : true,
+                      decoration: InputDecoration(
+                        labelText: 'Confirm Password',
+                        labelStyle: TextStyle(
+                          color: Colors.white,
+                        ),
+                        prefixIcon: Icon(
+                          Icons.key,
+                          color: Colors.white,
+                        ),
+                        focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Colors.white,
+                          ),
+                        ),
+                        enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ),
+                    Padding(padding: EdgeInsets.only(top: 12)),
+                    Row(
+                      children: [
+                        Checkbox(
+                          value: showPassword,
+                          onChanged: (var newValue) {
+                            setState(() {
+                              showPassword = newValue!;
+                              print(showPassword);
+                            });
+                          },
+                        ),
+                        Text(
+                          'Show Passwords?',
+                          style: TextStyle(
+                            color: Colors.white,
+                          ),
+                        ),
+                      ],
+                    ),
+                    Padding(padding: EdgeInsets.only(bottom: 32)),
+                    SizedBox(
+                      width: 300,
+                      height: 50,
+                      child: ElevatedButton(
+                        child: Text(
+                          'Register',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        onPressed: () {
+                          _doSignUp();
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.lightBlueAccent,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(50)),
+                        ),
                       ),
                     ),
                   ],
                 ),
-                Padding(padding: EdgeInsets.only(bottom: 32)),
-                SizedBox(
-                  width: 300,
-                  height: 50,
-                  child: ElevatedButton(
-                    child: Text(
-                      'Register',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    onPressed: () {
-                      _doSignUp();
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.lightBlueAccent,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(50)),
-                    ),
-                  ),
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
-        ],
-      ),
-    ),)
-    ,
+        ),)
+      ,
     );
   }
 
@@ -235,6 +236,7 @@ class _SignUpState extends State<SignUpScreen> {
     if (_formKey.currentState?.validate() == true) {
       String _emailForm = _emailInputController.text;
       String _passForm = _passswordInputController.text;
+      String _name = _nameInputController.text;
 
       setState(() {
         this._isLoading = true;
@@ -243,7 +245,9 @@ class _SignUpState extends State<SignUpScreen> {
       dynamic signUpResponse = await SignUpService().signUp(
         _emailForm,
         _passForm,
+        _name,
       );
+      await SignUpService().saveOnRealTimeDatabase(_name, _emailForm);
       print("SignupResponse " + signUpResponse['mensagem']);
       if (signUpResponse['sucesso']) {
         Utilities.message(context, signUpResponse['mensagem']);
