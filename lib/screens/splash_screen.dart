@@ -1,8 +1,10 @@
-import 'package:find_the_spy/components/app_bar.dart';
-import 'package:find_the_spy/components/fingerprint_material.dart';
-import 'package:flutter/material.dart';
+import 'dart:async';
 
-import 'tutorial_screen.dart';
+import 'package:find_the_spy/components/app_bar.dart';
+import 'package:find_the_spy/models/sign_in_service.dart';
+import 'package:find_the_spy/screens/login_screen.dart';
+import 'package:flutter/material.dart';
+import 'game_menu_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   static const String id = 'menu_screen';
@@ -14,6 +16,16 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  @override
+  void initState() {
+    super.initState();
+    Future.wait([
+      SignInService.isAuth(),
+    ]).then((value) => value[0]
+        ? Navigator.pushReplacementNamed(context, GameMenuScreen.id)
+        : Navigator.pushReplacementNamed(context, LoginScreen.id));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,19 +59,9 @@ class _SplashScreenState extends State<SplashScreen> {
                 textAlign: TextAlign.center,
               ),
               const SizedBox(
-                height: 32,
-                width: double.infinity,
-              ),
-              const Text(
-                'put your finger to identify your registration',
-                style: TextStyle(
-                  color: Colors.white70,
-                  fontSize: 18,
-                ),
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 48),
-              const FingerPrint(),
+                  height: 48,
+                  width: double.infinity,
+                  child: CircularProgressIndicator()),
             ],
           ),
         ),

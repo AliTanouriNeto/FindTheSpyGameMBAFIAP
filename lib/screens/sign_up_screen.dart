@@ -258,6 +258,9 @@ class _SignUpState extends State<SignUpScreen> {
         return;
       } else {
         Utilities.message(context, signUpResponse['mensagem']);
+        setState(() {
+          this._isLoading = false;
+        });
       }
     }
   }

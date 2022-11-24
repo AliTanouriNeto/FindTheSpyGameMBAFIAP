@@ -212,22 +212,12 @@ class _LoginScreenState extends State<LoginScreen> {
         Utilities.message(context, loginResponse['mensagem']);
         Navigator.pushReplacementNamed(context, GameMenuScreen.id);
       } else {
+        Utilities.message(context, loginResponse['mensagem']);
         setState(() {
           this._isLoading = false;
         });
-        Utilities.message(context, loginResponse['mensagem']);
       }
     }
-  }
-
-  Future<User> getSavedUser() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? jsonUser = prefs.getString(PreferencesKeys.activeUser);
-    print(jsonUser);
-
-    Map<String, dynamic> mapUser = json.decode(jsonUser!);
-    User user = User.fromJson(mapUser);
-    return user;
   }
 
   String? _emailValidator(String? value) {
