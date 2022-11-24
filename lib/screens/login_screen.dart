@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:find_the_spy/components/app_bar.dart';
 import 'package:find_the_spy/components/forgot_password.dart';
 import 'package:find_the_spy/components/utilities.dart';
@@ -8,10 +6,6 @@ import 'package:find_the_spy/screens/game_menu_screen.dart';
 import 'package:find_the_spy/screens/sign_up_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
-import '../models/user.dart';
-import '../values/preferences_keys.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);

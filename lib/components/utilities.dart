@@ -6,7 +6,7 @@ class Utilities {
       content: Text(text),
       duration: Duration(seconds: 7),
       action: SnackBarAction(
-        label: 'Dissmiss',
+        label: 'Dismiss',
         textColor: Colors.white,
         onPressed: () {
           //ScaffoldMessenger.of(context).hideCurrentSnackBar();

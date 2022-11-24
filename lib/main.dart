@@ -24,9 +24,9 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.indigo,
         ),
-        initialRoute: SplashScreen.id,
+        initialRoute: PlayGameScreen.id,
         routes: {
-          SplashScreen.id: (context) => SplashScreen(),
+          SplashScreen.id: (context) => const SplashScreen(),
           TutorialScreen.id: (context) => const TutorialScreen(),
           LoginScreen.id: (context) => const LoginScreen(),
           SignUpScreen.id: (context) => const SignUpScreen(),
