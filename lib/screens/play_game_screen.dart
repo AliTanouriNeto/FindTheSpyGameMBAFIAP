@@ -22,10 +22,12 @@ class _PlayGameState extends State<PlayGameScreen> {
   int numberSpys = 1;
   List<String> listStrings = <String>["Player: 1"];
   List<TextEditingController> _controllers = [];
+  List<bool> _isButtonDisabled = [];
   List<String> listMaps = <String>[];
   List<String> listFunctions = <String>[];
   late String mapChosen;
-  bool listViewControl = false;
+  bool listViewControl = true;
+  late String functionPlayer;
 
   @override
   Widget build(BuildContext context) {
@@ -52,109 +54,127 @@ class _PlayGameState extends State<PlayGameScreen> {
                 height: 150,
               ),
               Padding(padding: EdgeInsets.only(top: 50)),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    'Add Player',
-                  ),
-                  SizedBox(
-                    width: 16,
-                  ),
-                  Text(
-                    numberPlayers.toString(),
-                  ),
-                  SizedBox(
-                    width: 16,
-                  ),
-                  FloatingActionButton.small(
-                    onPressed: () {
-                      setState(() {
-                        if (numberPlayers < 12) {
-                          numberPlayers = numberPlayers + 1;
-                          listStrings.add("Player: $numberPlayers");
-                        } else {
-                          Utilities.message(context, "Máximo de 12 Jogadores");
-                        }
-                      });
-                    },
-                    child: Icon(Icons.add),
-                  ),
-                  SizedBox(
-                    width: 16,
-                  ),
-                  FloatingActionButton.small(
-                    onPressed: () {
-                      setState(() {
-                        if (numberPlayers <= 1) {
-                          numberPlayers = 1;
-                        } else {
-                          listStrings.remove("Player: $numberPlayers");
-                          numberPlayers = numberPlayers - 1;
-                        }
-                      });
-                    },
-                    child: Icon(Icons.exposure_minus_1_outlined),
-                  ),
-                ],
-              ),
+              (listViewControl)
+                  ? Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'Add Player',
+                        ),
+                        SizedBox(
+                          width: 16,
+                        ),
+                        Text(
+                          numberPlayers.toString(),
+                        ),
+                        SizedBox(
+                          width: 16,
+                        ),
+                        FloatingActionButton.small(
+                          heroTag: "btn1",
+                          onPressed: () {
+                            setState(() {
+                              if (numberPlayers < 12) {
+                                numberPlayers = numberPlayers + 1;
+                                listStrings.add("Player: $numberPlayers");
+                              } else {
+                                Utilities.message(
+                                    context, "Máximo de 12 Jogadores");
+                              }
+                            });
+                          },
+                          child: Icon(Icons.add),
+                        ),
+                        SizedBox(
+                          width: 16,
+                        ),
+                        FloatingActionButton.small(
+                          heroTag: "btn2",
+                          onPressed: () {
+                            setState(() {
+                              if (numberPlayers <= 1) {
+                                numberPlayers = 1;
+                              } else {
+                                listStrings.removeLast();
+                                numberPlayers = numberPlayers - 1;
+                                _controllers.removeLast();
+                                _isButtonDisabled.removeLast();
+                              }
+                            });
+                          },
+                          child: Icon(Icons.exposure_minus_1_outlined),
+                        ),
+                      ],
+                    )
+                  : SizedBox(
+                      height: 16,
+                    ),
               SizedBox(
                 height: 16,
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    'Add Spy     ',
-                  ),
-                  SizedBox(
-                    width: 16,
-                  ),
-                  Text(
-                    numberSpys.toString(),
-                  ),
-                  SizedBox(
-                    width: 16,
-                  ),
-                  FloatingActionButton.small(
-                    onPressed: () {
-                      setState(() {
-                        if (numberSpys < 3) {
-                          numberSpys = numberSpys + 1;
-                        }
-                      });
-                    },
-                    child: Icon(Icons.add),
-                  ),
-                  SizedBox(
-                    width: 16,
-                  ),
-                  FloatingActionButton.small(
-                    onPressed: () {
-                      setState(() {
-                        if (numberSpys <= 1) {
-                          numberSpys = 1;
-                        } else {
-                          numberSpys = numberSpys - 1;
-                        }
-                      });
-                    },
-                    child: Icon(Icons.exposure_minus_1_outlined),
-                  ),
-                ],
-              ),
+              (listViewControl)
+                  ? Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'Add Spy     ',
+                        ),
+                        SizedBox(
+                          width: 16,
+                        ),
+                        Text(
+                          numberSpys.toString(),
+                        ),
+                        SizedBox(
+                          width: 16,
+                        ),
+                        FloatingActionButton.small(
+                          heroTag: "btn3",
+                          onPressed: () {
+                            setState(() {
+                              if (numberSpys < 3) {
+                                numberSpys = numberSpys + 1;
+                              }
+                            });
+                          },
+                          child: Icon(Icons.add),
+                        ),
+                        SizedBox(
+                          width: 16,
+                        ),
+                        FloatingActionButton.small(
+                          heroTag: "btn4",
+                          onPressed: () {
+                            setState(() {
+                              if (numberSpys <= 1) {
+                                numberSpys = 1;
+                              } else {
+                                numberSpys = numberSpys - 1;
+                              }
+                            });
+                          },
+                          child: Icon(Icons.exposure_minus_1_outlined),
+                        ),
+                      ],
+                    )
+                  : SizedBox(
+                      height: 16,
+                    ),
               ListView.builder(
-                padding: const EdgeInsets.all(8),
+                padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 16),
                 scrollDirection: Axis.vertical,
                 shrinkWrap: true,
                 itemCount: listStrings.length,
                 itemBuilder: (BuildContext context, int index) {
                   _controllers.add(new TextEditingController());
+                  _isButtonDisabled.add(false);
                   return Container(
-                    height: 30,
+                    height: 45,
+                    padding: EdgeInsets.only(top: 16),
                     child: Center(
                       child: (listViewControl)
                           ? TextFormField(
+                              controller: _controllers[index],
                               onChanged: (myController) {
                                 setState(() {
                                   listStrings[index] = _controllers[index].text;
@@ -162,11 +182,25 @@ class _PlayGameState extends State<PlayGameScreen> {
                               },
                               decoration: InputDecoration(
                                 border: UnderlineInputBorder(),
-                                labelText: listStrings[index],
+                                hintText: listStrings[index],
                               ),
                             )
                           : ElevatedButton(
-                              onPressed: () {},
+                              onPressed: _isButtonDisabled[index]
+                                  ? null
+                                  : () {
+                                      String function = _getFunction();
+                                      if (function == "???") {
+                                        Utilities.showMyDialog(
+                                            context, "???", function);
+                                      } else {
+                                        Utilities.showMyDialog(
+                                            context, mapChosen, function);
+                                      }
+                                      setState(() {
+                                        _isButtonDisabled[index] = true;
+                                      });
+                                    },
                               child: Text(listStrings[index]),
                             ),
                     ),
@@ -174,48 +208,51 @@ class _PlayGameState extends State<PlayGameScreen> {
                 },
               ),
               Padding(padding: EdgeInsets.only(top: 50)),
-              (listViewControl)
-                  ? ElevatedButton(
-                      child: Text(
-                        'Play',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      onPressed: () async {
-                        await getMaps();
-                        mapChosen = choseMap();
-                        await playersFunctions(mapChosen);
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.blue,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(51)),
-                      ),
-                    )
-                  : ElevatedButton(
-                      child: Text(
-                        'Finalizar Partida',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      onPressed: () async {
-                        setState(() {
-                          listViewControl = true;
-                        });
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.blue,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(51)),
-                      ),
+              if (listViewControl)
+                ElevatedButton(
+                  child: Text(
+                    'Play',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
                     ),
-              Padding(padding: EdgeInsets.all(16.0)),
+                  ),
+                  onPressed: () async {
+                    await getMaps();
+                    mapChosen = choseMap();
+                    await playersFunctions(mapChosen);
+                    listViewControl = false;
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.blue,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(51)),
+                  ),
+                )
+              else
+                ElevatedButton(
+                  child: Text(
+                    'Finalizar Partida',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  onPressed: () async {
+                    setState(() {
+                      listViewControl = true;
+                      _isButtonDisabled.clear();
+                    });
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.blue,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(51)),
+                  ),
+                ),
+              Padding(padding: EdgeInsets.symmetric(vertical: 16)),
             ],
           ),
         ),
@@ -240,6 +277,7 @@ class _PlayGameState extends State<PlayGameScreen> {
     var rng = Random();
     int randomNumber = rng.nextInt(listMaps.length);
     String chosenMap = listMaps[randomNumber];
+    print(chosenMap);
     playersFunctions(chosenMap);
     return chosenMap;
   }
@@ -251,10 +289,28 @@ class _PlayGameState extends State<PlayGameScreen> {
       Map<String, dynamic> function = json.decode(response.body);
       function.forEach((key, value) {
         setState(() {
-          listFunctions.add(function[key]["Airplane"]);
-          print(function);
+          listFunctions.add(function[key][chosenMap]);
         });
       });
+      int numeroFuncoes = numberSpys + listFunctions.length - listStrings.length;
+      for (int i = 1;
+          i <= (numeroFuncoes);
+          i++) {
+        listFunctions.removeLast();
+      }
+      for (int i = 1; i <= numberSpys; i++) {
+        listFunctions.add("???");
+      }
     });
+  }
+
+  String _getFunction() {
+    var rng = Random();
+    int randomNumber = rng.nextInt(listFunctions.length);
+    String functionPlayer = listFunctions[randomNumber];
+    print(listFunctions[randomNumber]);
+    listFunctions.removeAt(randomNumber);
+
+    return functionPlayer;
   }
 }
