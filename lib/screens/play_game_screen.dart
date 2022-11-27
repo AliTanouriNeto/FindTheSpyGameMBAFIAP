@@ -134,6 +134,9 @@ class _PlayGameState extends State<PlayGameScreen> {
                             setState(() {
                               if (numberSpys < 3) {
                                 numberSpys = numberSpys + 1;
+                              }else{
+                                Utilities.message(
+                                    context, "Máximo de 3 Espiões");
                               }
                             });
                           },

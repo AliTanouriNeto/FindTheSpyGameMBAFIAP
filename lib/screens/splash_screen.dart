@@ -19,11 +19,22 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    Future.wait([
-      SignInService.isAuth(),
-    ]).then((value) => value[0]
-        ? Navigator.pushReplacementNamed(context, GameMenuScreen.id)
-        : Navigator.pushReplacementNamed(context, LoginScreen.id));
+
+    Future.delayed(Duration(seconds: 4), () async {
+      bool verifyToken = await SignInService.isAuth();
+
+      if (verifyToken) {
+        Navigator.pushReplacementNamed(context, GameMenuScreen.id);
+      } else {
+        Navigator.pushReplacementNamed(context, LoginScreen.id);
+      }
+    });
+
+    //Future.wait([
+    //SignInService.isAuth(),
+    //]).then((value) => value[0]
+    //  ? Navigator.pushReplacementNamed(context, GameMenuScreen.id)
+    //: Navigator.pushReplacementNamed(context, LoginScreen.id));
   }
 
   @override
@@ -59,9 +70,10 @@ class _SplashScreenState extends State<SplashScreen> {
                 textAlign: TextAlign.center,
               ),
               const SizedBox(
-                  height: 48,
-                  width: double.infinity,
-                  child: CircularProgressIndicator()),
+                height: 48,
+                width: double.infinity,
+              ),
+              CircularProgressIndicator(),
             ],
           ),
         ),
