@@ -38,17 +38,23 @@ Onde voce pode escolher para qual funcao voce quer ir.
 
 # Tela "Maps"
 onde voce pode verificar os mapas disponiveis no jogo, caso queira
+Ha uma integracao com o banco de dados do firebase nessa etapa
+
 ![image](https://user-images.githubusercontent.com/104680404/204342735-2428a728-5f51-45a1-8516-b9add9023659.png)
 ![image](https://user-images.githubusercontent.com/104680404/204342804-d0b0e4b1-cbd9-4622-bd25-e6c61ba40111.png)
 
 # Tela "Play"
 onde funciona toda a logica do game. Colocar quantidade de jogadores e, desses, quantos serao espioes.
+Ha uma integracao com o banco de dados do firebase nessa etapa
+
 ![image](https://user-images.githubusercontent.com/104680404/204342990-38f8602b-2d47-42cb-b7fe-a2f392cf7cca.png)
 ![image](https://user-images.githubusercontent.com/104680404/204343047-4086abee-c6c5-4136-8de6-65501ef3a88b.png)
 
 # Tela final "Play Game"
 cada jogador vai poder verificar a sua funcao e o mapa que esta inserido uma unica vez, depois de fechado o pop-up, passa o celular para o proximo e assim por diante.
 Espiao recebera uma tela com pontos de interrogacao, pois precisa descobrir que lugar se passa
+Ha uma integracao com o banco de dados do firebase nessa etapa
+
 ![image](https://user-images.githubusercontent.com/104680404/204343115-45dc0c7f-fae4-4a96-91ec-da16330e9069.png)
 ![image](https://user-images.githubusercontent.com/104680404/204343473-89a4dc7e-cdf6-4586-be4a-e595a3f97c70.png)
 ![image](https://user-images.githubusercontent.com/104680404/204343445-7377a2cf-4f4f-45af-8eae-643bcaa7ae02.png)
