@@ -48,7 +48,10 @@ onde funciona toda a logica do game. Colocar quantidade de jogadores e, desses, 
 
 # Tela final "Play Game"
 cada jogador vai poder verificar a sua funcao e o mapa que esta inserido uma unica vez, depois de fechado o pop-up, passa o celular para o proximo e assim por diante.
+Espiao recebera uma tela com pontos de interrogacao, pois precisa descobrir que lugar se passa
 ![image](https://user-images.githubusercontent.com/104680404/204343115-45dc0c7f-fae4-4a96-91ec-da16330e9069.png)
+![image](https://user-images.githubusercontent.com/104680404/204343473-89a4dc7e-cdf6-4586-be4a-e595a3f97c70.png)
+![image](https://user-images.githubusercontent.com/104680404/204343445-7377a2cf-4f4f-45af-8eae-643bcaa7ae02.png)
 
 
 ## Getting Started
